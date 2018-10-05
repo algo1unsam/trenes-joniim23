@@ -1,4 +1,6 @@
 import formaciones.*
+import deposito.*
+import vagonesYLocomotoras.*
 
 test "Sumar vagones a una formacion" 
 {
