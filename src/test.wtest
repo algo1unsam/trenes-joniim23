@@ -1,0 +1,82 @@
+import formaciones.*
+
+test "Sumar vagones a una formacion" 
+{
+	var formacion1 = new Formaciones()
+	var vagonCarga = new VagonesDeCarga()
+	var vagonPasajero = new VagonesDePasajeros()
+	formacion1.agregarVagones(vagonCarga)
+	formacion1.agregarVagones(vagonPasajero)
+	
+	assert.equals(2,formacion1.cantVagones())
+}
+
+test "Calcular el peso"
+{
+	var formacion = new Formaciones()
+	var vagonCarga = new VagonesDeCarga()
+	var vagonPasajero = new VagonesDePasajeros(ancho = 3, largo = 12)
+	
+	var locomotora = new Locomotora(peso = 1200)
+	assert.equals(1200,locomotora.peso())
+	
+	vagonCarga.agregarCarga(1500) //Menor a 2000 por defecto
+	assert.equals(1660,vagonCarga.peso())
+	
+	vagonPasajero.agregarPasajeros(30)
+	assert.equals(2400,vagonPasajero.peso())
+	
+	formacion.agregarVagones(vagonCarga)
+	formacion.agregarVagones(vagonPasajero)
+	formacion.agregarLocomotoras(locomotora)
+	
+	assert.equals(5260,formacion.formacionPeso())
+}
+
+test "cantidad de vagones livianos" 
+{
+	var formacion = new Formaciones()
+	var vagonCarga = new VagonesDeCarga()
+	var vagonPasajero = new VagonesDePasajeros(ancho = 3, largo = 12)
+	formacion.agregarVagones(vagonPasajero)
+	formacion.agregarVagones(vagonCarga)
+	assert.equals(2, formacion.vagonesLivianos())
+}
+
+test "cantidad de pasajeros a transportar" 
+{
+	var formacion = new Formaciones()
+	var vagonCarga = new VagonesDeCarga()
+	var vagonPasajero = new VagonesDePasajeros(ancho = 3, largo = 12)
+	vagonPasajero.agregarPasajeros(50)
+	
+	formacion.agregarVagones(vagonPasajero)
+	formacion.agregarVagones(vagonCarga)
+	assert.equals(50, formacion.pasajerosATransportar())
+}
+
+test "Locomotora con formacion eficiente" 
+{
+	var formacion = new Formaciones()
+	var locomotora = new Locomotora()
+	
+	formacion.agregarLocomotoras(locomotora)
+	assert.that(formacion.locomotoraEficiente())
+}
+
+test "Formacion se puede mover" 
+{
+	var formacion = new Formaciones()
+	var locomotora = new Locomotora()
+	var vagonCarga = new VagonesDeCarga()
+	var vagonPasajero = new VagonesDePasajeros(ancho = 3, largo = 12)
+	
+	vagonPasajero.agregarPasajeros(100)
+	
+	formacion.agregarLocomotoras(locomotora)
+	formacion.agregarVagones(vagonPasajero)
+	formacion.agregarVagones(vagonCarga)
+	
+	
+	assert.that(formacion.sePuedeMover())
+}
